@@ -94,10 +94,40 @@ Students = nancy
 TESTING INSTRUCTOR
 
 testing: instructor_names(Instructor)
+Instructor = adam
+
+Instructor = charles
+
+Instructor = cindi
+
+Instructor = cindi
+
+Instructor = davis
+
+Instructor = diane
+
+Instructor = jim
+
 
 TESTING STUDENTS
 
 testing: students(STUDENTS)
+STUDENTS = dan
+
+STUDENTS = john
+
+STUDENTS = ian
+
+STUDENTS = ian
+
+STUDENTS = karl
+
+STUDENTS = karl
+
+STUDENTS = lam
+
+STUDENTS = nancy
+
 
 TESTING ALL_PREREQ
 

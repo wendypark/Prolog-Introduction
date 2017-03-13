@@ -27,20 +27,26 @@ ecs140a_students(S) :-
 
 /* name of all instructors who teach john's courses */
 instructor_names(I) :-
-	instructor(I, X),
-	student(john, X).
+	student(john,SC),
+	instructor(I,IC),
+	member(A,SC),
+	member(A,IC).
 
 /* names of all students who are in jim's class */
 students(S) :-
-	student(S, X),
-	instructor(N, X),
-	member(jim, N).
+	student(S,SC),
+	instructor(jim, IC),
+	member(A,SC),
+	member(A,IC).
 
 /* all pre-req of course */
 allprereq(C, A) :-
-	course(C, A, _).
+	course(C, A, _),
+	findall.
 
 /***************** PART 2 ******************/
 
-
+all_length([],0).
+all_length([H|T],L) :-
+	
 
