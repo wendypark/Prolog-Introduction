@@ -27,26 +27,44 @@ ecs140a_students(S) :-
 
 /* name of all instructors who teach john's courses */
 instructor_names(I) :-
-	student(john,SC),
-	instructor(I,IC),
-	member(A,SC),
-	member(A,IC).
+	instructor(I,_),
+	intersection(I,john).
 
 /* names of all students who are in jim's class */
 students(S) :-
 	student(S,SC),
-	instructor(jim, IC),
-	member(A,SC),
-	member(A,IC).
+	intersection(jim,S).
+
+/* intersecting courses from student and instructor */
+intersection(I,S) :-
+	student(S, SC),
+	instructor(I, IC),
+	member(X,SC),
+	member(X,IC),
+	!.
 
 /* all pre-req of course */
-allprereq(C, A) :-
-	course(C, A, _),
-	findall.
+allprereq([],A).
+allprereq([H|T], A) :-
+	course(H,P1,_),
+	append(P1,H,A),
+	allprereq(P1,A).
 
 /***************** PART 2 ******************/
 
-all_length([],0).
+/* takes a list and counts number of atoms that occur in the list at all levels */
+all_length([],0). 
 all_length([H|T],L) :-
-	
+	all_length(T,L1),
+	L is L1+1,
+	!.
+all_length([[H|T]|T2],L) :-
+	all_length(T,L1),
+	all_length(T2,L2),
+	L is L1+L2.
 
+/* returns true if L contains equal number of a and b terms */
+
+
+
+	
