@@ -77,15 +77,9 @@ all_length([H|T],Result):-
 
 /* returns true if L contains equal number of a and b terms, not working */
 equal_a_b(L) :- 
-	compare(L,A,B),
-	A=B.
-
-compare([], A, B).
-compare([H|T], A, B) :-
-	(H == a ->
-		(A = 1)
-	;(B = 1)),
-	compare(T, A, B).
-
+	findall(a,member(a, L),X),
+	findall(b,member(b, L),Y),
+	length(X,Count),
+	length(Y,Count).
 
 	
