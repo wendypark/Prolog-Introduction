@@ -68,6 +68,46 @@ all_length([H|T],L) :-
 	L is L1+L2.
 
 /* returns true if L contains equal number of a and b terms, not working */
+equal_a_b(L) :- 
+	compare(L,A,B),
+	A=B.
+
+compare([], A, B).
+compare([H|T], A, B) :-
+	(H == a ->
+		(A = 1)
+	;(B = 1)),
+	compare(T, A, B).
+
+all_length([],0).
+all_length([H|T],Result):-
+	all_length(T, ResultOfTail),
+	(is_list(H) ->
+		(length(H, 0) ->
+			ResultOfHead = 1;
+			all_length(H, ResultOfHead)
+			);
+		ResultOfHead=1
+		),
+	Result is ResultOfTail + ResultOfHead.
+
+/* swap prefix and suffix of list */
+/* K is a sublist of L */
+/* S is list obtained by appending suffix of L, following occurrence of K in L, followed by prefix of L until K */
+swap_prefix_suffix(K,L,S) :-
+!
+.
+
+/* returns true if list A is palindrome */
+palin(A) :-
+!
+	.
+
+/* returns true if A is good sequence: either a single number 0 or number 1 followed by 2 other good sequences */
+good(A) :-
+!
+	.
+
 
 
 
