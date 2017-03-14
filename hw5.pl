@@ -61,6 +61,7 @@ allprereq(Course, Prereq):-
 	append(CoursePrereqsPrereqs, CoursePrereqs, Prereq).
 
 /***************** PART 2 ******************/
+/* List Tutorial: https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/lists.html */
 
 /* takes a list and counts number of atoms that occur in the list at all levels */
 all_length([],0).
@@ -83,8 +84,33 @@ equal_a_b(List):-
 	length(B,BCount),
 	ACount=BCount.
 
+/* returns true if */
+/* 		- K is sub-list of L */
+/* 		- S is a list in form of [suffix of L + K + prefix of L] */
 
+swap_prefix_suffix(Sublist, List, Swap):-
+	append(Prefix, Rest, List),
+	append(Sublist, Suffix, Rest),
 
+	append(Suffix, Rest2, Swap),
+	append(Sublist, Prefix, Rest2).
+
+	/* TODO: Figure out why this doesn't work (Results in stack overflow) */
+		/* append(Prefix, Sublist, Temp), */
+		/* append(Temp, Suffix, List), */
+
+/* returns true if L is a palindrome */
+palin(L):-
+	reverse(L, L2),
+	L=L2.
+
+/* returns true if input is a valid sequence in accordance to rules below */
+/* seq = [0] */
+good([0]).
+/* seq = [1,seq,seq] */
+good([1|[A,B]]):-
+	good(A),
+	good(B).
 
 
 
