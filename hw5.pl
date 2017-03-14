@@ -44,6 +44,8 @@ intersection(SC, IC):-
 	!.
 
 /* all pre-req of course, not working */
+allprereq([],[]) :- !.
+allprereq([],A).
 allprereq([H|T],A) :-
 	course(H,X,_), 
 	atomic_list_concat(L,'',H),  
