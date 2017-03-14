@@ -60,7 +60,6 @@ allprereq(Course, Prereq):-
 	allprereq(CoursePrereqs, CoursePrereqsPrereqs),
 	append(CoursePrereqsPrereqs, CoursePrereqs, Prereq).
 
-
 /***************** PART 2 ******************/
 
 /* takes a list and counts number of atoms that occur in the list at all levels */
