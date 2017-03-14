@@ -57,12 +57,14 @@ allprereq([H|T],A) :-
 /* takes a list and counts number of atoms that occur in the list at all levels, not working */
 all_length([],0). 
 all_length([H|T],L) :-
+	atom(H),
 	all_length(T,L1),
 	L is L1+1,
 	!.
-all_length([[H|T]|T2],L) :-
-	all_length([H|T],L1),
-	all_length(T2,L2),
+all_length([H|T],L) :-
+	is_list(H),
+	all_length(H,L1),
+	all_length(T,L2),
 	L is L1+L2.
 
 /* returns true if L contains equal number of a and b terms, not working */

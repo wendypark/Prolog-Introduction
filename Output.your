@@ -142,25 +142,25 @@ testing: all_length([a,b,[c],d],All_Len)
 All_Len = 4
 
 testing: all_length([a,b,[c,d],e],All_Len)
-All_Len = 4
+All_Len = 5
 
 testing: all_length([[[[[]]]]],All_Len)
 All_Len = 1
 
 testing: all_length([[a,b],[],d],All_Len)
-All_Len = 3
+All_Len = 4
 
 testing: all_length([a,[b,[c,[d,e],f],g],h],All_Len)
-All_Len = 3
+All_Len = 8
 
 testing: all_length([[a,b,[],d],[[]],d],All_Len)
-All_Len = 3
+All_Len = 6
 
 testing: all_length([[a,b,[[[[e,e]]]],d],[[]],d],All_Len)
-All_Len = 3
+All_Len = 7
 
 testing: all_length([[a,b,[[[a],b]],d],[[],[],[[[]]]],d],All_Len)
-All_Len = 3
+All_Len = 9
 
 
 TESTING EQ_A_B
