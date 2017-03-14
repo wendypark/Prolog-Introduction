@@ -27,43 +27,48 @@ ecs140a_students(S) :-
 
 /* name of all instructors who teach john's courses */
 instructor_names(I) :-
-	instructor(I,_),
-	intersection(I,john).
+	instructor(I, IC),
+	student(john, SC),
+	intersection(SC, IC).
 
 /* names of all students who are in jim's class */
 students(S) :-
-	student(S,SC),
-	intersection(jim,S).
-
-/* intersecting courses from student and instructor */
-intersection(I,S) :-
+	instructor(jim, IC),
 	student(S, SC),
-	instructor(I, IC),
-	member(X,SC),
-	member(X,IC),
+	intersection(SC, IC).
+
+/* Mark intersections of SC and IC as true */
+intersection(SC, IC) :-
+	member(X, SC),
+	member(X, IC),
 	!.
 
-/* all pre-req of course */
+/* all pre-req of course, not working */
+allprereq([],[]) :- !.
 allprereq([],A).
-allprereq([H|T], A) :-
-	course(H,P1,_),
-	append(P1,H,A),
-	allprereq(P1,A).
+allprereq([H|T],A) :-
+	course(H,X,_), 
+	atomic_list_concat(L,'',H),  
+	append(X,L,A),
+	allprereq(X,A).
 
 /***************** PART 2 ******************/
 
-/* takes a list and counts number of atoms that occur in the list at all levels */
+/* takes a list and counts number of atoms that occur in the list at all levels, not working */
 all_length([],0). 
 all_length([H|T],L) :-
 	all_length(T,L1),
 	L is L1+1,
 	!.
 all_length([[H|T]|T2],L) :-
-	all_length(T,L1),
+	all_length([H|T],L1),
 	all_length(T2,L2),
 	L is L1+L2.
 
-/* returns true if L contains equal number of a and b terms */
+/* returns true if L contains equal number of a and b terms, not working */
+equal_a_b(L) :-
+
+	
 
 
 
