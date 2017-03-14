@@ -45,24 +45,31 @@ intersection(SC, IC):-
 	!.
 
 /* all pre-req of course */
-allprereq([],A).
-allprereq([H|T], A) :-
+allprereq(H, A) :-
 	course(H,P1,_),
-	append(P1,H,A),
+	A=[],
 	allprereq(P1,A).
+/* allprereq([],A). */
+allprereq([H|_], A) :-
+	course(H,P,_),
+	append(P,A,A).
+	/* allprereq(P,A). */
 
 /***************** PART 2 ******************/
 
 /* takes a list and counts number of atoms that occur in the list at all levels */
-all_length([],0). 
-all_length([H|T],L) :-
-	all_length(T,L1),
-	L is L1+1,
-	!.
-all_length([[H|T]|T2],L) :-
-	all_length(T,L1),
-	all_length(T2,L2),
-	L is L1+L2.
+
+all_length([],0).
+all_length([H|T],Result):-
+	all_length(T, ResultOfTail),
+	(is_list(H) ->
+		(length(H, 0) ->
+			ResultOfHead = 1;
+			all_length(H, ResultOfHead)
+			);
+		ResultOfHead=1
+		),
+	Result is ResultOfTail + ResultOfHead.
 
 /* returns true if L contains equal number of a and b terms */
 
