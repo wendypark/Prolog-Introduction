@@ -126,9 +126,17 @@ STUDENTS = nancy
 TESTING ALL_PREREQ
 
 testing: allprereq(ecs140a,All_Pre)
+All_Pre = [m16a,ecs30,ecs40,ecs110]
+
 testing: allprereq(m16a,All_Pre)
+All_Pre = []
+
 testing: allprereq(ecs110,All_Pre)
+All_Pre = [m16a,ecs30,ecs40]
+
 testing: allprereq(ecs50,All_Pre)
+All_Pre = [m16a,ecs30,ecs40]
+
 
 TESTING ALL_LEN
 

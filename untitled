@@ -1,0 +1,1 @@
+gprolog --consult-file part1.facts.pl --consult-file hw5.pl --consult-file test.pl --query-goal ty --query-goal halt
