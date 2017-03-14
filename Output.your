@@ -219,3 +219,88 @@ no
 TESTING SWAP
 
 testing: swap_prefix_suffix([],[],SWAP)
+<<<<<<< HEAD
+=======
+SWAP = []
+
+testing: swap_prefix_suffix([],[a,b],SWAP)
+SWAP = [a,b]
+
+SWAP = [b,a]
+
+SWAP = [a,b]
+
+testing: swap_prefix_suffix([a],[a,b],SWAP)
+SWAP = [b,a]
+
+testing: swap_prefix_suffix([a],[a],SWAP)
+SWAP = [a]
+
+testing: swap_prefix_suffix([a],[],SWAP)
+testing: swap_prefix_suffix([c,d],[a,b,c,d,e,f],SWAP)
+SWAP = [e,f,c,d,a,b]
+
+testing: swap_prefix_suffix([a,b,c],[a,b,d,e,a,b,c,a,b],SWAP)
+SWAP = [a,b,a,b,c,a,b,d,e]
+
+testing: swap_prefix_suffix(SWAP,[a,b,c,d,e],[b,c,d,e,a])
+SWAP = [a]
+
+SWAP = []
+
+SWAP = [b,c,d,e]
+
+testing: swap_prefix_suffix(SWAP[b,a,b,b,a,a,a])
+SWAP = [a,b,b,a]
+[a,a,a,b,b,a,b]
+
+testing: swap_prefix_suffix(SWAP[c,a,b,c,a,b,c,a,b,c])
+SWAP = [c,a,b,c]
+[a,b,c,c,a,b,c,c,a,b]
+
+
+TESTING palin
+
+testing: palin([a,b,c,d])
+no
+
+testing: palin([a,b,b,a])
+yes
+
+testing: palin([a,b,a])
+yes
+
+testing: palin([a,a,a,a])
+yes
+
+testing: palin([])
+yes
+
+testing: palin([b,a,a,a,a,a,a,a,a,a,a,a,b])
+yes
+
+testing: palin([b,a,b,a,b,a,b,a,b,a,b])
+yes
+
+
+TESTING good
+
+testing: good([0])
+yes
+
+testing: good([0,1,0])
+no
+
+testing: good([1,1,0])
+no
+
+testing: good([1,0,1,0,0])
+no
+
+testing: good([1,0,1,1,1,1,1,0,1])
+no
+
+
+TESTING puzzle
+
+>>>>>>> 2d3947ac48176e3ed03ec16372d2ea5c76a0f8cf
