@@ -27,20 +27,21 @@ ecs140a_students(S) :-
 
 /* name of all instructors who teach john's courses */
 instructor_names(I) :-
-	instructor(I,_),
-	intersection(I,john).
+	instructor(I, IC),
+	student(john, SC),
+	intersection(SC, IC).
+	/* I think this works because it separates the intersection logic away from the original and statement */
 
 /* names of all students who are in jim's class */
-students(S) :-
-	student(S,SC),
-	intersection(jim,S).
-
-/* intersecting courses from student and instructor */
-intersection(I,S) :-
+students(S):-
+	instructor(jim, IC),
 	student(S, SC),
-	instructor(I, IC),
-	member(X,SC),
-	member(X,IC),
+	intersection(SC, IC).
+
+/* Mark intersections of SC and IC as true */
+intersection(SC, IC):-
+	member(X, SC),
+	member(X, IC),
 	!.
 
 /* all pre-req of course */
