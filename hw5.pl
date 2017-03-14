@@ -32,20 +32,18 @@ instructor_names(I) :-
 	intersection(SC, IC).
 
 /* names of all students who are in jim's class */
-students(S) :-
+students(S):-
 	instructor(jim, IC),
 	student(S, SC),
 	intersection(SC, IC).
 
 /* Mark intersections of SC and IC as true */
-intersection(SC, IC) :-
+intersection(SC, IC):-
 	member(X, SC),
 	member(X, IC),
 	!.
 
 /* all pre-req of course, not working */
-allprereq([],[]) :- !.
-allprereq([],A).
 allprereq([H|T],A) :-
 	course(H,X,_), 
 	atomic_list_concat(L,'',H),  
@@ -66,7 +64,8 @@ all_length([[H|T]|T2],L) :-
 	L is L1+L2.
 
 /* returns true if L contains equal number of a and b terms, not working */
-equal_a_b(L) :-
+
+
 
 	
 
