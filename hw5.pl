@@ -113,4 +113,51 @@ good([1|[A,B]]):-
 	good(B).
 
 
+/***************** PART 3 ******************/
+state(N, Farmer, Wolf, Goat, Cabbage):-
+	(Farmer=left; Farmer=right),
+	(Wolf=left; Wolf=right),
+	(Goat=left; Goat=right),
+	(Cabbage=left; Cabbage=right).
 
+solve_ferry(0):-
+	state(0,left,left,left,left),
+	arc(right,0,1),
+	inform_state(1),
+	solve_ferry(1).
+
+solve_ferry(N):-
+	state(N,_,_,_,_),
+	M is N+1,
+	(arc(right,N,M); arc(left,N,M)),
+	state(M,W,X,Y,Z),
+	inform_state(M),
+	stop_or_continue_state(M,W,X,Y,Z).
+
+stop_or_continue_state(N,right,right,right,right):-!.
+stop_or_continue_state(N,_,_,_,_):-
+	solve_ferry(N).
+
+/* Print move */
+inform_state(N) :-
+	state(N,W,X,Y,Z),
+  write([step,N,W,X,Y,Z]),
+  nl.
+
+opposite(A, B):-
+	A \= B.
+unsafe(A);-
+	state(A,Farmer, Wolf, Goat, Cabbage),
+	(Wolf=Goat; Goat=Cabbage).
+safe(A):-
+	not(unsafe(A)).
+take(A,right,left):-
+	A=left.
+take(A,left,right):-
+	A=right.
+arc(N,X,Y):-
+	take(N,Previous,Next),
+	(state(X,Previous,Previous,_,_), state(Y,Next,Next,_,_));
+	(state(X,Previous,_,Previous,_), state(Y,Next,_,Next,_));
+	(state(X,Previous,_,_,Previous), state(Y,Next,_,_,Next)),
+	safe(Y).
