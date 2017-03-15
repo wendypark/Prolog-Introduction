@@ -219,8 +219,6 @@ no
 TESTING SWAP
 
 testing: swap_prefix_suffix([],[],SWAP)
-<<<<<<< HEAD
-=======
 SWAP = []
 
 testing: swap_prefix_suffix([],[a,b],SWAP)
@@ -303,4 +301,3 @@ no
 
 TESTING puzzle
 
->>>>>>> 2d3947ac48176e3ed03ec16372d2ea5c76a0f8cf
