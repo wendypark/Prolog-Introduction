@@ -77,12 +77,12 @@ all_length([H|T],Result):-
 	Result is ResultOfTail + ResultOfHead.
 
 /* returns true if L contains equal number of a and b terms, not working */
-equal_a_b(List):-
-	findall(List, member(a, List), A),
-	length(A,ACount),
-	findall(List, member(b, List), B),
-	length(B,BCount),
-	ACount=BCount.
+equal_a_b(L) :- 
+	findall(a,member(a, L),X),
+	findall(b,member(b, L),Y),
+	length(X,Count),
+	length(Y,Count).
+
 
 /* returns true if */
 /* 		- K is sub-list of L */
