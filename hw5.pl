@@ -179,7 +179,7 @@ go_helper(A, C, Route):-
 
 /* Define endpoint */
 go_helper(state(A,B,C,D), state(A,B,C,D),R):-
-	writeresults(R).
+	writeresults(L).
 
 /***************** PRINT *******************/
 writeresults([H,N|T]) :-
