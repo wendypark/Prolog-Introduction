@@ -113,46 +113,95 @@ good([1|[A,B]]):-
 
 /***************** PART 3 ******************/
 
-
-
 /***************** TERMS *******************/
+/* [Farmer, Wolf, Goat, Cabbage] */
+
 /* left, right side of bank  */
 term(right).
 term(left).
 
-/* state(left, left, right, left) */
-state(Farmer, Wolf, Goat, Cabbage) :-
-	(Farmer = left; Farmer = right),
-	(Wolf = left; Wolf = right),
-	(Goat = left; Goat = right),
-	(Cabbage = left; Cabbage = right). 
-
-/* left,right side of banks are opposite of one another */
-/* returns true */
+/* opposite */
 opposite(right,left).
 opposite(left,right).
 
 /* return true if target is unsafe */
-/* if farmer opposite side of Wolf or Goat, not safe */
-unsafe(state(A, B, B, C)) :- 
-	opposite(A, B).
+/* farmer not watching over Wolf and Goat*/
+unsafe(state(A, B, B, C)) :-
+  opposite(A, B).
+
+ /* farmer not watching over Cabbage and Goat*/
+unsafe(state(A, B, C, C)) :-
+  opposite(A, C).
 
 /* return true if target is safe */
-safe(A) :-
-	not unsafe(A)
+safe(A):-
+	\+ unsafe(A).
 
 /* move object X from bank A to bank B */
-take (X,A,B) :-
+take(X,A,B) :-
 	(A == left ->
 		X = right;
 	X = left).
 
 /***************** MAIN *******************/
-solve :- 
+
+/* arc */
+arc(take(wolf, X, Y), state(X, X, C, D), state(Y, Y, C, D)):-
+  opposite(X, Y).
+
+arc(take(goat, X, Y), state(X, B, X, D), state(Y, B, Y, D)):-
+  opposite(X, Y).
+
+arc(take(cabbage, X, Y), state(X, B, C, X), state(Y, B, C, Y)):-
+  opposite(X, Y).
+
+arc(take(farmer, X, Y), state(X, B, C, D), state(Y, B, C, D)):-
+  opposite(X, Y).
+
+/* solve */
+solve:- 
 	go(state(left,left,left,left),state(right,right,right,right)).
 
-/* go */
-go(State1, State2) :-
-	go_helper(State1,State2,[State1],Result),
-	!,
-	print_results(Result).
+go(A,B):-
+  go_helper(A,B,[A]).
+
+go_helper(A, C, Route):-
+	/* Make move */
+  arc(_, A, B),
+  /* Only allow new moves */
+	findall(B,member(B, Route), Found),
+	length(Found, 0),
+  safe(B),
+
+  /* Recurse */
+  append(Route, [B], R),
+  go_helper(B, C, R).
+
+/* Define endpoint */
+go_helper(state(A,B,C,D), state(A,B,C,D),R):-
+	writeresults(R).
+
+/***************** PRINT *******************/
+writeresults([H,N|T]) :-
+	writehead(H,N),
+	writeresults([N|T]).
+
+writehead(state(X, X, C, D),state(Y, Y, C, D)):-
+	write('take(wolf,'),
+	write(X),write(','),
+	write(Y),write(')'),nl.
+
+writehead(state(X, B, X, D),state(Y, B, Y, D)):-
+	write('take(goat,'),
+	write(X),write(','),
+	write(Y),write(')'),nl.
+
+writehead(state(X, B, C, X),state(Y, B, C, Y)):-
+	write('take(cabbage,'),
+	write(X),write(','),
+	write(Y),write(')'),nl.
+
+writehead(state(X, B, C, D),state(Y, B, C, D)):-
+	write('take(none,'),
+	write(X),write(','),
+	write(Y),write(')'),nl.
