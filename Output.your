@@ -302,16 +302,12 @@ no
 TESTING puzzle
 
 take(goat,left,right)
-take(farmer,right,left)
+take(none,right,left)
 take(wolf,left,right)
 take(goat,right,left)
 take(cabbage,left,right)
-take(farmer,right,left)
+take(none,right,left)
 take(goat,left,right)
-take(goat,left,right)
-take(farmer,right,left)
-take(cabbage,left,right)
-take(goat,right,left)
-take(wolf,left,right)
-take(farmer,right,left)
-take(goat,left,right)
+
+
+

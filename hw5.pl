@@ -112,65 +112,43 @@ good([1|[A,B]]):-
 	good(B).
 
 /***************** PART 3 ******************/
-
-/***************** TERMS *******************/
 /* [Farmer, Wolf, Goat, Cabbage] */
 
-/* left, right side of bank  */
-term(right).
-term(left).
+solve:- 
+  go(state(left,left,left,left),state(right,right,right,right)).
 
-/* opposite */
-opposite(right,left).
-opposite(left,right).
+go(A,B):-
+  go_helper(A,B,[A]),!.
 
-/* return true if target is unsafe */
-/* farmer not watching over Wolf and Goat*/
 unsafe(state(A, B, B, C)) :-
   opposite(A, B).
-
- /* farmer not watching over Cabbage and Goat*/
 unsafe(state(A, B, C, C)) :-
   opposite(A, C).
 
-/* return true if target is safe */
 safe(A):-
-	\+ unsafe(A).
+  \+ unsafe(A).
 
-/* move object X from bank A to bank B */
-take(X,A,B) :-
-	(A == left ->
-		X = right;
-	X = left).
+opposite(left,right).
+opposite(right,left).
 
-/***************** MAIN *******************/
-
-/* arc */
 arc(take(wolf, X, Y), state(X, X, C, D), state(Y, Y, C, D)):-
   opposite(X, Y).
-
 arc(take(goat, X, Y), state(X, B, X, D), state(Y, B, Y, D)):-
   opposite(X, Y).
-
 arc(take(cabbage, X, Y), state(X, B, C, X), state(Y, B, C, Y)):-
   opposite(X, Y).
-
 arc(take(farmer, X, Y), state(X, B, C, D), state(Y, B, C, D)):-
   opposite(X, Y).
-
-/* solve */
-solve:- 
-	go(state(left,left,left,left),state(right,right,right,right)).
 
 go(A,B):-
   go_helper(A,B,[A]).
 
 go_helper(A, C, Route):-
-	/* Make move */
+  /* Make move */
   arc(_, A, B),
   /* Only allow new moves */
-	findall(B,member(B, Route), Found),
-	length(Found, 0),
+  findall(B,member(B, Route), Found),
+  length(Found, 0),
   safe(B),
 
   /* Recurse */
@@ -185,6 +163,9 @@ go_helper(state(A,B,C,D), state(A,B,C,D),R):-
 writeresults([H,N|T]) :-
 	writehead(H,N),
 	writeresults([N|T]).
+
+writeresults([N]) :-
+	write(''),nl.
 
 writehead(state(X, X, C, D),state(Y, Y, C, D)):-
 	write('take(wolf,'),
