@@ -113,51 +113,56 @@ good([1|[A,B]]):-
 
 
 /***************** PART 3 ******************/
-state(N, Farmer, Wolf, Goat, Cabbage):-
-	(Farmer=left; Farmer=right),
-	(Wolf=left; Wolf=right),
-	(Goat=left; Goat=right),
-	(Cabbage=left; Cabbage=right).
 
-solve_ferry(0):-
-	state(0,left,left,left,left),
-	arc(right,0,1),
-	inform_state(1),
-	solve_ferry(1).
+/* [Farmer, Wolf, Goat, Cabbage] */
 
-solve_ferry(N):-
-	state(N,_,_,_,_),
-	M is N+1,
-	(arc(right,N,M); arc(left,N,M)),
-	state(M,W,X,Y,Z),
-	inform_state(M),
-	stop_or_continue_state(M,W,X,Y,Z).
+unsafe(state(A, B, B, C)) :-
+  opposite(A, B).
+unsafe(state(A, B, C, C)) :-
+  opposite(A, C).
 
-stop_or_continue_state(N,right,right,right,right):-!.
-stop_or_continue_state(N,_,_,_,_):-
-	solve_ferry(N).
-
-/* Print move */
-inform_state(N) :-
-	state(N,W,X,Y,Z),
-  write([step,N,W,X,Y,Z]),
-  nl.
-
-opposite(A, B):-
-	A \= B.
-unsafe(A);-
-	state(A,Farmer, Wolf, Goat, Cabbage),
-	(Wolf=Goat; Goat=Cabbage).
 safe(A):-
-	not(unsafe(A)).
-take(A,right,left):-
-	A=left.
-take(A,left,right):-
-	A=right.
-arc(N,X,Y):-
-	take(N,Previous,Next),
-	(state(X,Previous,Previous,_,_), state(Y,Next,Next,_,_));
-	(state(X,Previous,_,Previous,_), state(Y,Next,_,Next,_));
-	(state(X,Previous,_,_,Previous), state(Y,Next,_,_,Next)),
-	safe(Y).
-	
+	\+ unsafe(A).
+
+opposite(left,right).
+opposite(right,left).
+
+arc(take(wolf, X, Y), state(X, X, C, D), state(Y, Y, C, D)):-
+  opposite(X, Y).
+arc(take(goat, X, Y), state(X, B, X, D), state(Y, B, Y, D)):-
+  opposite(X, Y).
+arc(take(cabbage, X, Y), state(X, B, C, X), state(Y, B, C, Y)):-
+  opposite(X, Y).
+arc(take(farmer, X, Y), state(X, B, C, D), state(Y, B, C, D)):-
+  opposite(X, Y).
+
+go(A,B):-
+  go_helper(A,B,[A]).
+
+go_helper(A, C, Route):-
+	/* Make move */
+  arc(_, A, B),
+  /* Only allow new moves */
+	findall(B,member(B, Route), Found),
+	length(Found, 0),
+  safe(B),
+
+  /* Recurse */
+  append(Route, [B], R),
+  go_helper(B, C, R).
+
+/* Define endpoint */
+go_helper(state(A,B,C,D), state(A,B,C,D),R):-
+	print_solution(R).
+  !.
+
+/* Print solution */
+print_solution([]).
+print_solution([H|L]):-
+	print_state(H),
+	nl,
+	print_solution(L).
+
+print_state(state(A,B,C,D)):-
+	write(['farmer =', A, ' wolf =', B, ' goat =', C, ' cabbage =', D]).
+
