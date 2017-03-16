@@ -61,7 +61,6 @@ allprereq(Course, Prereq):-
 	append(CoursePrereqsPrereqs, CoursePrereqs, Prereq).
 
 /***************** PART 2 ******************/
-/* List Tutorial: https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/lists.html */
 
 /* takes a list and counts number of atoms that occur in the list at all levels */
 all_length([],0).
@@ -76,7 +75,7 @@ all_length([H|T],Result):-
 		),
 	Result is ResultOfTail + ResultOfHead.
 
-/* returns true if L contains equal number of a and b terms, not working */
+/* returns true if L contains equal number of a and b terms */
 equal_a_b(L) :- 
 	findall(a,member(a, L),X),
 	findall(b,member(b, L),Y),
@@ -104,6 +103,7 @@ palin(L):-
 	L=L2.
 
 /* returns true if input is a valid sequence in accordance to rules below */
+
 /* seq = [0] */
 good([0]).
 /* seq = [1,seq,seq] */
@@ -111,53 +111,48 @@ good([1|[A,B]]):-
 	good(A),
 	good(B).
 
-
 /***************** PART 3 ******************/
-state(N, Farmer, Wolf, Goat, Cabbage):-
-	(Farmer=left; Farmer=right),
-	(Wolf=left; Wolf=right),
-	(Goat=left; Goat=right),
-	(Cabbage=left; Cabbage=right).
 
-solve_ferry(0):-
-	state(0,left,left,left,left),
-	arc(right,0,1),
-	inform_state(1),
-	solve_ferry(1).
 
-solve_ferry(N):-
-	state(N,_,_,_,_),
-	M is N+1,
-	(arc(right,N,M); arc(left,N,M)),
-	state(M,W,X,Y,Z),
-	inform_state(M),
-	stop_or_continue_state(M,W,X,Y,Z).
 
-stop_or_continue_state(N,right,right,right,right):-!.
-stop_or_continue_state(N,_,_,_,_):-
-	solve_ferry(N).
+/***************** TERMS *******************/
+/* left, right side of bank  */
+term(right).
+term(left).
 
-/* Print move */
-inform_state(N) :-
-	state(N,W,X,Y,Z),
-  write([step,N,W,X,Y,Z]),
-  nl.
+/* state(left, left, right, left) */
+state(Farmer, Wolf, Goat, Cabbage) :-
+	(Farmer = left; Farmer = right),
+	(Wolf = left; Wolf = right),
+	(Goat = left; Goat = right),
+	(Cabbage = left; Cabbage = right). 
 
-opposite(A, B):-
-	A \= B.
-unsafe(A);-
-	state(A,Farmer, Wolf, Goat, Cabbage),
-	(Wolf=Goat; Goat=Cabbage).
-safe(A):-
-	not(unsafe(A)).
-take(A,right,left):-
-	A=left.
-take(A,left,right):-
-	A=right.
-arc(N,X,Y):-
-	take(N,Previous,Next),
-	(state(X,Previous,Previous,_,_), state(Y,Next,Next,_,_));
-	(state(X,Previous,_,Previous,_), state(Y,Next,_,Next,_));
-	(state(X,Previous,_,_,Previous), state(Y,Next,_,_,Next)),
-	safe(Y).
-	
+/* left,right side of banks are opposite of one another */
+/* returns true */
+opposite(right,left).
+opposite(left,right).
+
+/* return true if target is unsafe */
+/* if farmer opposite side of Wolf or Goat, not safe */
+unsafe(state(A, B, B, C)) :- 
+	opposite(A, B).
+
+/* return true if target is safe */
+safe(A) :-
+	not unsafe(A)
+
+/* move object X from bank A to bank B */
+take (X,A,B) :-
+	(A == left ->
+		X = right;
+	X = left).
+
+/***************** MAIN *******************/
+solve :- 
+	go(state(left,left,left,left),state(right,right,right,right)).
+
+/* go */
+go(State1, State2) :-
+	go_helper(State1,State2,[State1],Result),
+	!,
+	print_results(Result).
